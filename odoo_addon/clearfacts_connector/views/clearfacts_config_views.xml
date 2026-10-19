@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_clearfacts_config_form" model="ir.ui.view">
+        <field name="name">clearfacts.config.form</field>
+        <field name="model">clearfacts.config</field>
+        <field name="arch" type="xml">
+            <form string="Clearfacts">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                        <field name="auth_mode" widget="radio"/>
+                    </group>
+                    <group string="Personal Access Token" invisible="auth_mode != 'token'">
+                        <field name="token" password="True"/>
+                    </group>
+                    <group string="OpenID Connect" invisible="auth_mode != 'oidc'">
+                        <field name="client_id"/>
+                        <field name="client_secret" password="True"/>
+                        <field name="redirect_uri"/>
+                    </group>
+                    <group string="Status">
+                        <field name="last_sync"/>
+                        <field name="last_error"/>
+                    </group>
+                    <footer>
+                        <button name="action_test_connection" type="object" string="Test connection" class="btn-secondary"/>
+                        <button name="action_sync_now" type="object" string="Sync now" class="btn-primary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_clearfacts_config" model="ir.actions.act_window">
+        <field name="name">Clearfacts</field>
+        <field name="res_model">clearfacts.config</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_clearfacts_root" name="Clearfacts" parent="account.menu_finance_configuration" sequence="90"/>
+    <menuitem id="menu_clearfacts_config" name="Connection" parent="menu_clearfacts_root" action="action_clearfacts_config" sequence="10"/>
+</odoo>
